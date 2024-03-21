@@ -23,7 +23,7 @@ function attemptLogin() {
         let password = (<HTMLInputElement>document.getElementById("password")).value;
         form.append("email", email);
         form.append("password", password);
-        axios.post('http://127.0.0.1:8000/login/', form)
+        axios.post('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/login/', form)
             .then(response => 
             {
                 isAuthenticated = response.data;

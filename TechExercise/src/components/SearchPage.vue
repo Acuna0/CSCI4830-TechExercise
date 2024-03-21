@@ -10,7 +10,7 @@ const submitPokemon = (pokemon: any) => {
   let pokemonID = pokemonList.indexOf(pokemon) + 1;
   form.append("pokemonID", pokemonID.toString());
   form.append("email", email.toString());
-  axios.post('http://127.0.0.1:8000/collection/', form)
+  axios.post('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/collection/', form)
     .then(response => {
       pokemonData = response.data;
       // alert(pokemonData[0])
@@ -79,7 +79,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://127.0.0.1:8000/collection')
+    axios.get('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/collection')
     .then(response => this.pokemonData = response.data)
   },
   methods: {
@@ -87,7 +87,7 @@ export default {
       let form = new FormData();
       let pokemonID = pokemonList.indexOf(pokemon);
       form.append("pokemonID", pokemonID.toString())
-      axios.post('http://127.0.0.1:8000/collection/', form)
+      axios.post('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/collection/', form)
       .then(response => this.pokemonData = response.data)
     }
   }

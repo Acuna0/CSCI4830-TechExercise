@@ -35,7 +35,7 @@ onMounted(() => {
 });
 
 function getCollection(email: any) {
-  axios.get('http://127.0.0.1:8000/collection/', {params: { email: email}})
+  axios.get('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/collection/', {params: { email: email}})
     .then(response => {
       collectionData.value = response.data.pokemonNames;
       normalizedCollectionData.value = collectionData.value.map(pokemonName => pokemonName);
@@ -57,11 +57,11 @@ function removePokemon(pokemon: any) {
         // let email = sessionStorage.getItem("email");
         form.append("email", email ? email : "");
         form.append("pokemonName", pokemonName);
-        axios.post('http://127.0.0.1:8000/delete/', form)
+        axios.post('http://ec2-18-222-28-198.us-east-2.compute.amazonaws.com:8000/delete/', form)
             .then(response => 
             {
               alert("Successful");
-              location.reload();
+              router.push("/");
             }, 
             (error) =>
             {
@@ -94,7 +94,7 @@ function removePokemonMessage(pokemon: any) {
   </div>
   <div class="cardContainer" v-if="dataLoaded && normalizedCollectionData">
     <div id="pokemonCard" class="card dataCard" v-for="pokemon in normalizedCollectionData">
-      <img :src="imagePath+pokemon+imageSourceSuffix" class="card-img-top" :alt=altPokemonCardMessage+pokemon>
+      <img :src="imagePath+pokemon.toLowerCase()+imageSourceSuffix" class="card-img-top" :alt=altPokemonCardMessage+pokemon>
       <div class="card-body">
         <p class="card-text" id="pokemonCardText">{{pokemon[0].toUpperCase()+pokemon.slice(1,)}}
           <button class="fa fa-ban" id="pokemonAddButton" :value=pokemon v-on:click="removePokemonMessage(pokemon); removePokemon(pokemon)">
