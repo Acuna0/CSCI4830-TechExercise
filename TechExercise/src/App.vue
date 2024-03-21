@@ -1,33 +1,42 @@
 <script setup lang="ts">
-import SearchPage from './components/SearchPage.vue';
-import CollectionPage from './components/CollectionPage.vue';
-
 import { RouterLink, RouterView } from 'vue-router'
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 
 const router = useRouter()
-
-function goToAbout() { 
+let isAuthenticated:any = false;
+function goToCollection() { 
   router.push({ path: '/collection' })
 }
+
+onMounted(() => {
+  if (sessionStorage.getItem("isAuthenticated") == "true") {
+    isAuthenticated = false;
+  } else {
+    isAuthenticated = false;
+  }
+  
+});
+
+// const checkSession = setInterval(function() {
+//     if(sessionStorage.getItem("isAuthenticated") != null) {
+//         isAuthenticated = sessionStorage.getItem("isAuthenticated")
+//     }
+//     if (isAuthenticated == "true")
+//     {
+//         router.push({ path: '/' });
+//     }
+// }, 100);
+
 </script>
 
 <template>
-  <div class="nav-bar">
-    <div class="test">
-      <RouterLink to="/" class="nav-buttons" id="nav-button">
-        <label class="nav-bar-labels">Home</label
-      ></RouterLink>
-    </div>
-    <div class="test">
-      <RouterLink to="/collection" class="nav-buttons" id="nav-button">
-        <label class="nav-bar-labels">Library</label>
-      </RouterLink>
-    </div>
-  </div>
   <div class="body">
     <RouterView></RouterView>
   </div>
+  <!-- <div class="body">
+    <RouterView></RouterView>
+  </div> -->
 </template>
 
 <style>
