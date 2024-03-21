@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import LoginPage from '@/components/LoginPage.vue';
 import router from '@/router';
+import { onMounted } from 'vue';
+import { RouterView } from 'vue-router';
 
-function checkLogin() {
+let isAuthenticated: any = false;
+
+const afterLoad = () => {
   if (sessionStorage.getItem("isAuthenticated") == "true") {
-    router.push({ path: '/' })
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+    router.push("/login")
   }
 }
+afterLoad();
+
 </script>
 
 <template>
-  <LoginPage />
+  <LoginPage v-if="!isAuthenticated"/>
+  <RouterView v-else></RouterView>
 </template>
 
 <style>

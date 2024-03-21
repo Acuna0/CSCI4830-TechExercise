@@ -2,7 +2,7 @@
 import axios from 'axios';
 import router from '@/router';
 
-let isAuthenticated = true;
+let isAuthenticated: any;
 let validationEmailPassed = false;
 let validationPasswordPassed = false;
 
@@ -11,30 +11,8 @@ function loginSignup(buttonType: string) {
     if (buttonType != "login") {
         goToSignup()
     } else {
-        let checkEmailField = (<HTMLInputElement>document.getElementById("email")).value
-        let checkPasswordField = (<HTMLInputElement>document.getElementById("password")).value
-
-        if (checkEmailField.length < 5 ||
-            !checkEmailField.includes("@") ||
-            !checkEmailField.includes(".com")) 
-            {
-                alert("Email must be a minimum of 5 characters and include an @ and .com")
-            } else {
-                validationEmailPassed = true;
-            }
-        if (checkPasswordField.length < 8 || 
-            checkPasswordField == checkEmailField.toLocaleLowerCase() ||
-            checkPasswordField == checkEmailField.toUpperCase() ||
-            !checkPasswordField.match("[@!#$%^&*]+"))
-            {
-                alert("Password must be a minium of 8 characters, cannot be all lowercase or uppercase, and must contain at least 1 special character")
-            } else {
-                validationPasswordPassed = true;
-            }
-        
-        if (validationEmailPassed && validationPasswordPassed) {
-            attemptLogin();
-        }
+        console.log("inside else")
+        attemptLogin();
     }
 }
 
@@ -46,15 +24,25 @@ function attemptLogin() {
         form.append("email", email);
         form.append("password", password);
         axios.post('http://127.0.0.1:8000/login/', form)
-            .then(response => {
-            isAuthenticated = response.data;
+            .then(response => 
+            {
+                isAuthenticated = response.data;
+                sessionStorage.setItem("isAuthenticated", "true")
+                sessionStorage.setItem("email", email)
+                router.push("/")
+            }, 
+            (error) =>
+            {
+                alert(error.message + "\nMay be due to incorrect email or password");
             });
     };
     Login();
+    
 }
 function goToSignup() {
     router.push({ path: '/signup' });
 }
+
 </script>
 <template>
 <form @submit.prevent="attemptLogin()">
